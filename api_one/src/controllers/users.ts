@@ -8,12 +8,14 @@ class UserController {
     this.userService = userService;
   }
 
-  getAllUsers(req: Request, res: Response) {
-    const users = this.userService.getAllUsers();
+  async getAllUsers(req: Request, res: Response): Promise<void> {
+    const users = await this.userService.getAllUsers();
     if (users.length === 0) {
-      return res.status(404).json({
+      res.status(404).json({
         message: "No users found"
       });
+
+      return;
     }
     res.json(users);
   }
@@ -23,6 +25,22 @@ class UserController {
     
     res.json({
       message: `User with id ${id}`
+    });
+  }
+
+  async createUser(req: Request, res: Response) {
+    const { name, lastName, password, email } = req.body;
+
+    const user = await this.userService.createUser({
+      name,
+      lastName,
+      password,
+      email
+    })
+
+    res.status(201).json({
+      message: "User created",
+      user
     });
   }
 }

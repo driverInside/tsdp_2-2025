@@ -3,6 +3,7 @@ import rootRouter from './routes';
 
 const app: Express = express();
 
+app.use(express.json());
 app.get('/', (req: Request, res: Response) => {
   res.json({
     message: 'Hola mundo con express'
